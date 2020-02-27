@@ -1,5 +1,6 @@
 class Api::ProductsController < ApplicationController
 
+
   def index
     @products = Product.all
 
@@ -24,12 +25,6 @@ class Api::ProductsController < ApplicationController
                           supplier_id: params[:supplier_id]
                           )
     if @product.save
-      image = Image.new(
-                        product_id: @product.id,
-                        url: params[:image_url]
-                        )
-      image.save
-      
       render 'show.json.jbuilder'
     else
       render json: {errors: @product.errors.full_messages}, status: :unprocessable_entity
