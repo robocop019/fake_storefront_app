@@ -5,13 +5,13 @@ class Api::ProductsController < ApplicationController
 
     search_term = params[:search]
     discount = params[:discount]
-    price_sort = params[:sort]
+    sort_attribute = params[:sort]
     sort_order = params[:sort_order]
 
     @products = @products.where('name iLIKE ?', "%#{search_term}%") if search_term
-    @products = @products.where('price < 250') if discount
-    @products = @products.order(price: :desc) if sort_order
-    @products = @products.order(:price) if price_sort
+    @products = @products.where('price < ?', 250) if discount == 'true'
+    @products = @products.order(price: :desc) if sort_attribute == 'price' && sort_order == 'desc'
+    @products = @products.order(:price) if sort_attribute == 'price'
 
     render 'index.json.jbuilder'
   end
