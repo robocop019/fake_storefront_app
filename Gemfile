@@ -18,6 +18,8 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
+gem 'jwt'
+
 gem 'seed_dump', '~> 3.3', '>= 3.3.1'
 
 # Use ActiveStorage variant
