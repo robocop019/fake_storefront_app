@@ -2,12 +2,19 @@ class Api::ProductsController < ApplicationController
   before_action :authenticate_admin, only: [:create, :update, :destroy]
 
   def index
-    @products = Product.all
 
     search_term = params[:search]
     discount = params[:discount]
     sort_attribute = params[:sort]
     sort_order = params[:sort_order]
+    category_name = params[:category]
+
+    @products = Product.all
+
+    if category_name
+      category = Category.find_by(name: category_name)
+      @products = category.products
+    end
 
     @products = @products.where('name iLIKE ?', "%#{search_term}%") if search_term
     @products = @products.where('price < ?', 250) if discount == 'true'
