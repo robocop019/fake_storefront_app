@@ -7,5 +7,9 @@ class User < ApplicationRecord
 
   validates :email, presence: true
   validates :email, uniqueness: true
+
+  def cart
+    carted_products.where(status: 'Carted')
+  end
   
 end
