@@ -7,31 +7,14 @@ class Api::OrdersController < ApplicationController
   end
 
   def create
-    carted_products = current_user.cart
 
-    calculated_subtotal = 0
+    @order = Order.new(user_id: current_user.id)
 
-    carted_products.each do |carted_product|
-      calculated_subtotal += carted_product.subtotal
-    end
+    @order.store_totals
+    @order.save
+    @order.update_cart
 
-    calculated_tax = calculated_subtotal * 0.09
-    calculated_total = calculated_subtotal + calculated_tax
-
-    @order = Order.new(
-                      user_id: current_user.id,
-                      subtotal: calculated_subtotal,
-                      tax: calculated_tax,
-                      total: calculated_total
-                      )
-
-
-    if @order.save
-      carted_products.update_all(status: 'Purchased', order_id: @order.id)
-      render 'show.json.jbuilder'
-    else
-      render json: {errors: @order.errors.full_messages}, status: :unprocessable_entity
-    end
+    render 'show.json.jbuilder'
   end
 
   def show
