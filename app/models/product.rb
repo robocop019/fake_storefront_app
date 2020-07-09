@@ -8,7 +8,7 @@ class Product < ApplicationRecord
   validates :description, presence: true
 
   has_many :images
-  belongs_to :supplier
+  belongs_to :supplier, optional: true
   
   has_many :product_categories
   has_many :categories, through: :product_categories
